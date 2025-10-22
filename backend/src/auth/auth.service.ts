@@ -44,7 +44,7 @@ export class AuthService {
     const { password: _, ...userData } = user;
 
     return {
-      ...userData,
+      user: { ...userData },
       token: this.getJwtToken({ id: user.id, username: user.username }),
     };
   }
@@ -53,7 +53,7 @@ export class AuthService {
     const { password, ...userData } = user;
 
     return {
-      ...userData,
+      user: { ...userData },
       token: this.getJwtToken({ id: user.id, username: user.username }),
     };
   }
