@@ -1,7 +1,9 @@
+import { Note } from 'src/notes/entities/note.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -18,6 +20,9 @@ export class User {
     select: false,
   })
   password: string;
+
+   @OneToMany(() => Note, (note) => note.user)
+  notes: Note[];
 
   @CreateDateColumn()
   createdAt: Date;
