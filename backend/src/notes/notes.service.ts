@@ -35,7 +35,7 @@ export class NotesService {
     return this.excludeUserPassword(savedNote);
   }
 
-  async findAll(filterDto: FilterNotesDto, user: User): Promise<Note[]> {
+  async findAll(filterDto: FilterNotesDto, user: User) {
     const queryBuilder = this.buildNotesQuery(user);
     this.applyFilters(queryBuilder, filterDto);
 
@@ -43,7 +43,27 @@ export class NotesService {
       .orderBy('note.createdAt', 'DESC')
       .getMany();
 
-    return notes.map((note) => this.excludeUserPassword(note));
+    // Count total, active and archived notes
+    const totalCount = await this.notesRepository.count({
+      where: { user: { id: user.id } },
+    });
+
+    const activeCount = await this.notesRepository.count({
+      where: { user: { id: user.id }, status: NoteStatus.ACTIVE },
+    });
+
+    const archivedCount = await this.notesRepository.count({
+      where: { user: { id: user.id }, status: NoteStatus.ARCHIVED },
+    });
+
+    return {
+      info: {
+        total: totalCount,
+        active: activeCount,
+        archived: archivedCount,
+      },
+      notes: notes.map((note) => this.excludeUserPassword(note)),
+    };
   }
 
   async findOne(id: string, user: User): Promise<Note> {
@@ -72,8 +92,8 @@ export class NotesService {
     return this.excludeUserPassword(savedNote);
   }
 
-  async remove(id: string, user: User): Promise<void> {
-    const note = await this.findNoteByIdAndUser(id, user);
+  async remove(id: string): Promise<void> {
+    const note = await this.findNoteByIdAndUser(id);
     await this.notesRepository.remove(note);
   }
 
@@ -85,7 +105,7 @@ export class NotesService {
     return this.changeNoteStatus(id, user, NoteStatus.ACTIVE);
   }
 
-  private async findNoteByIdAndUser(id: string, user: User): Promise<Note> {
+  private async findNoteByIdAndUser(id: string, user?: User): Promise<Note> {
     const note = await this.notesRepository.findOne({
       where: { id, user: { id: user.id } },
       relations: ['categories', 'user'],
