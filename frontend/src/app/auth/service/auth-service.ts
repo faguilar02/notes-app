@@ -5,7 +5,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 
 import { Observable, map, catchError, of } from 'rxjs';
 import { AuthResponse } from '../interfaces/auth-response';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 
 type AuthStatus = 'checking' | 'authenticated' | 'not-authenticated';
 const baseUrl = environment.baseUrl;
