@@ -1,9 +1,11 @@
 # Ensolvers - Notes App Challenge
 
 This project is a full-stack application with an Angular frontend and a NestJS backend, containerized with Docker.
+## Video Demo 
+
+https://github.com/user-attachments/assets/6501a03b-c3ec-4877-b61f-df9961ee0422
 
 ## Live Demo
-https://github.com/user-attachments/assets/6501a03b-c3ec-4877-b61f-df9961ee0422
 The application is deployed and accessible at:
 
 - **Frontend:** [https://aguilarvaldez-b0ba5b-1.onrender.com](https://aguilarvaldez-b0ba5b-1.onrender.com)
