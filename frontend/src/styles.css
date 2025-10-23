@@ -1,1 +1,35 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+@plugin "daisyui" { themes: false; }
+
+@theme {
+  --color-background: hsl(240 15% 8%);
+  --color-foreground: hsl(240 10% 95%);
+  --color-card: hsl(240 12% 12%);
+  --color-border: hsl(240 10% 20%);
+  --color-muted: hsl(240 10% 20%);
+  --color-muted-foreground: hsl(240 10% 60%);
+  --color-primary: hsl(262 83% 58%);
+  --color-ring: hsl(262 83% 58%);
+}
+
+/* <<--- pon tu reset dentro de @layer base para que NO anule utilidades */
+@layer base {
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    height: 100%;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* opcional: autofill */
+@layer utilities {
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--color-foreground);
+    -webkit-box-shadow: 0 0 0 1000px var(--color-card) inset;
+    transition: background-color 9999s;
+  }
+}

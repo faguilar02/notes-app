@@ -1,0 +1,136 @@
+<div class="w-full bg-background/80 border-b border-border/20">
+  <div class="w-full px-24 py-6 mx-auto max-w-7xl">
+    <div class="flex items-center justify-between">
+      <!-- Izquierda: acciones -->
+      <div class="flex items-center gap-2.5">
+        <!-- New Note -->
+        <button
+          (click)="emitIsModalOpen()"
+          class="inline-flex items-center gap-1.5 rounded-lg bg-primary text-white px-4 py-2 text-sm font-semibold cursor-pointer hover:bg-primary/90 hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-300 ease-in-out"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+          >
+            <g fill="none">
+              <path
+                d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"
+              />
+              <path
+                fill="currentColor"
+                d="M10.5 20a1.5 1.5 0 0 0 3 0v-6.5H20a1.5 1.5 0 0 0 0-3h-6.5V4a1.5 1.5 0 0 0-3 0v6.5H4a1.5 1.5 0 0 0 0 3h6.5z"
+              />
+            </g>
+          </svg>
+          <span>New Note</span>
+        </button>
+
+        <!-- Toggle Archived/Active -->
+        @if (!showArchived()) {
+        <button
+          (click)="toggleNotesStatus(statusOptions.ARCHIVED)"
+          (click)="toggleArchived()"
+          class="inline-flex items-center gap-1.5 rounded-lg bg-black text-white px-4 py-2 text-sm font-medium hover:bg-pink-500 hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-300 ease-in-out cursor-pointer"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M20 8v7c0 2.828 0 4.243-.879 5.121C18.243 21 16.828 21 14 21h-4c-2.828 0-4.243 0-5.121-.879C4 19.243 4 17.828 4 15V8m15.5-5h-15c-.935 0-1.402 0-1.75.201a1.5 1.5 0 0 0-.549.549C2 4.098 2 4.565 2 5.5s0 1.402.201 1.75a1.5 1.5 0 0 0 .549.549C3.098 8 3.565 8 4.5 8h15c.935 0 1.402 0 1.75-.201a1.5 1.5 0 0 0 .549-.549C22 6.902 22 6.435 22 5.5s0-1.402-.201-1.75a1.5 1.5 0 0 0-.549-.549C20.902 3 20.435 3 19.5 3M10 11h4"
+            />
+          </svg>
+          <span>Archived</span>
+        </button>
+        } @else {
+        <button
+          (click)="toggleNotesStatus(statusOptions.ACTIVE)"
+          (click)="toggleArchived()"
+          class="inline-flex items-center gap-1.5 rounded-lg bg-cyan-500 text-white px-4 py-2 text-sm font-medium hover:bg-pink-500 hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-300 ease-in-out cursor-pointer"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M15 21q-.825 0-1.412-.587T13 19v-4q0-.825.588-1.412T15 13h4q.825 0 1.413.588T21 15v4q0 .825-.587 1.413T19 21zm0-10q-.825 0-1.412-.587T13 9V5q0-.825.588-1.412T15 3h4q.825 0 1.413.588T21 5v4q0 .825-.587 1.413T19 11zM5 11q-.825 0-1.412-.587T3 9V5q0-.825.588-1.412T5 3h4q.825 0 1.413.588T11 5v4q0 .825-.587 1.413T9 11zm0 10q-.825 0-1.412-.587T3 19v-4q0-.825.588-1.412T5 13h4q.825 0 1.413.588T11 15v4q0 .825-.587 1.413T9 21z"
+            />
+          </svg>
+          <span>Active Notes</span>
+        </button>
+        }
+      </div>
+
+      <!-- Derecha: Filtro -->
+      <div class="flex items-center gap-2.5 relative">
+        <label class="text-muted-foreground text-sm">Filter:</label>
+        <div class="relative">
+          <button
+            (click)="toggleDropdown()"
+            class="rounded-lg bg-card/60 text-foreground border border-border/40 px-3 py-1.5 min-w-[140px] text-sm outline-none hover:bg-card/80 hover:scale-105 hover:shadow-md transition-all duration-300 ease-in-out flex items-center justify-between gap-2 cursor-pointer"
+          >
+            <span>{{ selectedFilter() }}</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 16 16"
+              class="transition-transform duration-300 ease-in-out"
+              [class.rotate-180]="showDropdown()"
+            >
+              <path
+                fill="currentColor"
+                fill-rule="non-zero"
+                d="M13.069 5.157L8.384 9.768a.546.546 0 0 1-.768 0L2.93 5.158a.55.55 0 0 0-.771 0a.53.53 0 0 0 0 .759l4.684 4.61a1.65 1.65 0 0 0 2.312 0l4.684-4.61a.53.53 0 0 0 0-.76a.55.55 0 0 0-.771 0"
+              />
+            </svg>
+          </button>
+
+          @if (showDropdown()) {
+          <div
+            class="absolute top-full right-0 mt-2 w-[180px] rounded-lg bg-card border border-border/40 shadow-lg overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-300"
+          >
+            @for (category of categories(); track category.id) {
+            <button
+              (click)="selectFilter(category.name, category.name)"
+              class="w-full px-3 py-2 text-sm text-left flex items-center justify-between rounded-md hover:bg-pink-500 hover:text-white hover:scale-105 hover:shadow-md active:scale-95 transition-all duration-200 ease-in-out"
+              [class.bg-pink-500]="selectedFilter() ===category.name"
+              [class.text-white]="selectedFilter() === category.name"
+              [class.scale-105]="selectedFilter() === category.name"
+            >
+              <span>{{ category.name }}</span>
+              @if (selectedFilter() === category.name) {
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                class="animate-in zoom-in duration-200"
+              >
+                <path
+                  fill="currentColor"
+                  d="M17.69 7.776a1 1 0 0 1 .034 1.414l-7.39 7.76l-4.058-4.26a1 1 0 0 1 1.448-1.38l2.61 2.74l5.942-6.24a1 1 0 0 1 1.414-.034"
+                />
+              </svg>
+              }
+            </button>
+            }
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
