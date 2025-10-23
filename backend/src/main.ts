@@ -20,7 +20,10 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: ['http://localhost:4200'],
+    origin: [
+      'http://localhost:4200',
+      'https://aguilarvaldez-b0ba5b-1.onrender.com'
+    ],
     credentials: true,
   });
 

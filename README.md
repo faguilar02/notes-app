@@ -2,6 +2,13 @@
 
 This project is a full-stack application with an Angular frontend and a NestJS backend, containerized with Docker.
 
+## Live Demo
+
+The application is deployed and accessible at:
+
+- **Frontend:** [https://aguilarvaldez-b0ba5b-1.onrender.com](https://aguilarvaldez-b0ba5b-1.onrender.com)
+- **Backend API:** [https://aguilarvaldez-b0ba5b.onrender.com](https://aguilarvaldez-b0ba5b.onrender.com)
+
 ## Default Credentials
 
 To access the application, use the following credentials:

@@ -1,3 +1,3 @@
 export const environment = {
-  baseUrl: 'http://localhost:3000/api/v1',
+  baseUrl: 'https://aguilarvaldez-b0ba5b.onrender.com/api/v1',
 };
