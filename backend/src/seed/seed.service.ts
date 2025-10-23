@@ -23,14 +23,14 @@ export class SeedService {
   ) {}
 
   async runSeed(): Promise<string> {
-    await this.seedCategories();
+    await this.deleteExistingUser();
     await this.seedUser();
+    await this.seedCategories();
 
     return 'Admin user and categories created successfully';
   }
 
   private async seedUser(): Promise<void> {
-    await this.deleteExistingUser();
     await this.usersService.create(SEED_USER);
   }
 
@@ -45,6 +45,20 @@ export class SeedService {
     );
 
     if (existingUser) {
+      await this.userRepository
+        .createQueryBuilder()
+        .delete()
+        .from('notes')
+        .where('userId = :userId', { userId: existingUser.id })
+        .execute();
+
+      await this.categoryRepository
+        .createQueryBuilder()
+        .delete()
+        .from(Category)
+        .where('userId = :userId', { userId: existingUser.id })
+        .execute();
+
       await this.userRepository.remove(existingUser);
     }
   }
