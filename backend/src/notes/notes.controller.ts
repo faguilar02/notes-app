@@ -46,6 +46,7 @@ export class NotesController {
   }
 
   @Delete(':id')
+  @Auth()
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(
     @Param('id') id: string,
