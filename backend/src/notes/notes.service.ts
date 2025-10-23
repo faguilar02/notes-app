@@ -92,8 +92,10 @@ export class NotesService {
     return this.excludeUserPassword(savedNote);
   }
 
-  async remove(id: string): Promise<void> {
-    const note = await this.findNoteByIdAndUser(id);
+  async remove(id: string, user: User): Promise<void> {
+    // Ensure note exists and belongs to the user
+    const note = await this.findNoteByIdAndUser(id, user);
+    // Remove the note entity
     await this.notesRepository.remove(note);
   }
 
