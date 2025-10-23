@@ -31,8 +31,21 @@ To access the application, use the following credentials:
     git clone https://github.com/hirelens-challenges/AguilarValdez-b0ba5b.git
     cd AguilarValdez-b0ba5b
     ```
+2.  **Configure Environment Variables:**
+    
+    Create a `.env` file from the example file and fill in the required credentials:
 
-2.  **Run the application:**
+    ```bash
+    # For Windows (PowerShell)
+    Copy-Item .env.example .env
+
+    # For Linux/macOS
+    cp .env.example .env
+    ```
+
+    Open the `.env` file and set your database credentials and JWT secret.
+
+3.  **Run the application:**
     The provided script will check for prerequisites, then build and run the entire application using Docker Compose.
 
     - **For Windows (using PowerShell):**
@@ -48,7 +61,7 @@ To access the application, use the following credentials:
       ```
       This process will set up the frontend, backend, and database containers.
 
-3.  **Access the application:**
+4.  **Access the application:**
     Once the containers are up and running, the services will be available at:
 
     - **Frontend (Angular):** [http://localhost:4200](http://localhost:4200)
