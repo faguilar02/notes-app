@@ -1,1 +1,42 @@
-<h1>home page works</h1>
+<div class="min-h-screen bg-background">
+  <notes-header />
+  <notes-toolbar
+    (isModalOpen)="this.showModal.set($event)"
+    [categories]="categoriesResource.value()!"
+    (queryParams)="setQueryParams($event)"
+  />
+  <div class="w-full px-24 py-12 mx-auto max-w-7xl">
+    <app-notes-summary />
+    @if (notesResource.value()) {
+    <app-notes-list
+      (createNote)="this.showModal.set($event)"
+      [notes]="notesResource.value()!.notes"
+      [hasNotes]="notesResource.value()!.notes.length > 0"
+      [totalNotes]="notesResource.value()!.info.total"
+      [currentStatus]="params().status"
+      (changeRefreshTickValue)="addOneToRefreshTick($event)"
+      (editNote)="openEditModal($event)"
+      (noteArchived)="onNoteArchived($event)"
+      (noteDeleted)="onNoteDeleted()"
+    ></app-notes-list>
+    }
+  </div>
+
+  @if (showModal()) {
+  <app-create-note-modal
+    (isModalOpen)="closeModalAndReset()"
+    (newNote)="createNote($event)"
+    (updateNote)="editNote($event)"
+    [categories]="categoriesResource.value()!"
+    [noteToEdit]="noteToEdit()"
+  />
+  }
+
+  <!-- Toast -->
+  <app-toast
+    [show]="showToast()"
+    [type]="toastType()"
+    [title]="toastTitle()"
+    [message]="toastMessage()"
+  />
+</div>

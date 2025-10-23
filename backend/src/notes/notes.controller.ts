@@ -47,8 +47,8 @@ export class NotesController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('id') id: string, @GetUser() user: User) {
-    await this.notesService.remove(id, user);
+  async remove(@Param('id') id: string) {
+    await this.notesService.remove(id);
   }
 
   @Patch(':id/archive')
