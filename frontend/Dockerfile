@@ -1,4 +1,5 @@
-FROM node:20-alpine
+# Build stage
+FROM node:20-alpine AS build
 
 WORKDIR /app
 
@@ -12,8 +13,20 @@ RUN npm install -g @angular/cli && npm install
 # Copy source code
 COPY . .
 
-# Expose port
-EXPOSE 4200
+# Build for production
+RUN ng build --configuration=production
 
-# Start the application
-CMD ["ng", "serve", "--host", "0.0.0.0", "--port", "4200", "--disable-host-check"]
+# Production stage
+FROM nginx:alpine
+
+# Copy built files from build stage
+COPY --from=build /app/dist/ennotes-frontend/browser /usr/share/nginx/html
+
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port
+EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
