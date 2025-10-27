@@ -31,14 +31,12 @@ export class NotesService {
       map((response) => {
         let filteredNotes = response.notes;
 
-        // Filter by status
         if (params.status) {
           filteredNotes = filteredNotes.filter(
             (note) => note.status === params.status
           );
         }
 
-        // Filter by category
         if (params.category) {
           filteredNotes = filteredNotes.filter((note) =>
             note.categories.some((cat) => cat.name === params.category)
