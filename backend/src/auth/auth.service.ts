@@ -2,6 +2,7 @@ import {
   Injectable,
   UnauthorizedException,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,6 +12,7 @@ import { User } from '../users/entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -46,6 +48,36 @@ export class AuthService {
     return {
       user: { ...userData },
       token: this.getJwtToken({ id: user.id, username: user.username }),
+    };
+  }
+
+  async register(createUserDto: CreateUserDto) {
+    const { username, password } = createUserDto;
+    const existingUser = await this.userRepository.findOne({
+      where: { username },
+    });
+
+    if (existingUser) {
+      throw new BadRequestException('Username already exists');
+    }
+
+    const hashedPassword = await bcrypt.hashSync(password, 10);
+
+    const user = this.userRepository.create({
+      ...createUserDto,
+      password: hashedPassword,
+    });
+
+    const savedUser = await this.userRepository.save(user);
+
+    delete savedUser.password;
+
+    return {
+      user: savedUser,
+      token: this.getJwtToken({
+        id: savedUser.id,
+        username: savedUser.username,
+      }),
     };
   }
 

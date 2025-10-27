@@ -1,12 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormUtils } from '../../../utils/form-utils';
 import { AuthService } from '../../service/auth-service';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './register.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -18,21 +23,21 @@ export class Register {
   formUtils = FormUtils;
   hasError = signal(false);
 
-  loginForm = this.fb.group({
+  registerForm = this.fb.group({
     username: ['', [Validators.required, Validators.minLength(9)]],
     password: ['', [Validators.required, Validators.minLength(9)]],
   });
 
   onSubmit() {
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
       return;
     }
 
-    const { username, password } = this.loginForm.value;
+    const { username, password } = this.registerForm.value;
 
     this.authService
-      .login(username!, password!)
+      .register(username!, password!)
       .subscribe((isAuthenticated) => {
         if (isAuthenticated) {
           this.router.navigateByUrl('/');
